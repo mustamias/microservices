@@ -1,0 +1,31 @@
+package org.com;
+
+import java.util.stream.Stream;
+
+import org.com.dao.CompanyRepository;
+import org.com.entities.company;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class ServiceCompanyApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ServiceCompanyApplication.class, args);
+	}
+
+	@Bean
+	CommandLineRunner start(CompanyRepository companyRepository) {
+		return args -> {
+			Stream.of("A","B","C").forEach(cn -> {
+				companyRepository.save(new company(null, cn, 100+Math.random()*900));
+			});
+			companyRepository.findAll().forEach(System.out::println);
+		};
+	}
+}
+

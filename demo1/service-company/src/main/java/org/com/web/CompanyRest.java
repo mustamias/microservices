@@ -1,0 +1,33 @@
+package org.com.web;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RefreshScope
+@RestController
+public class CompanyRest {
+	@Value("${xParam}")
+	private int xParam;
+	@Value("${yParam}")
+	private int yParam;
+	@Value("${me}")
+	private String me;
+	
+	@GetMapping("/myconfig")
+	public Map<String, Object> myConfig () {
+		
+		Map<String, Object> config = new HashMap<>();
+		config.put("xParam", xParam);
+		config.put("yParam", yParam);
+		config.put("me", me);
+		config.put("thread?ame", Thread.currentThread().getName());
+		return config;
+	}
+	
+
+}
